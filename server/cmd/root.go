@@ -1,3 +1,4 @@
+// Package cmd - реализует команду cobra rooCmd, поднимающую сервер.
 package cmd
 
 import (
@@ -30,6 +31,7 @@ func Execute() {
 	}
 }
 
+// startServer - запускает сервер.
 func startServer() {
 	log.Println("Listening at port 3001...")
 	server := &http.Server{
@@ -48,6 +50,7 @@ func startServer() {
 	gracefulShutdown(server, sig)
 }
 
+// gracefulShutdown - реализует Grace-Ful shutdown.
 func gracefulShutdown(server *http.Server, sig chan os.Signal) {
 	<-sig
 	shutdownCtx, shutdownCtxCancel := context.WithTimeout(context.Background(), time.Second*20)

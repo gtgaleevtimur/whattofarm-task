@@ -1,3 +1,4 @@
+// Package cmd - описывает работу rootCmd клиента и логику запроса к серверу.
 package cmd
 
 import (
@@ -11,6 +12,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// pair - переменная флага --pair
 var pair string
 
 var rootCmd = &cobra.Command{
@@ -35,6 +37,7 @@ type Data struct {
 	BtcUsdt string `json:"BTC-USDT,omitempty"`
 }
 
+// rest - запрашивает от сервера необходимые данные.
 func rest() {
 	var request *http.Request
 	var err error

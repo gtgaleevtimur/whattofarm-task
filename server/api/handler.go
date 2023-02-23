@@ -1,3 +1,4 @@
+// Package api - пакет с настройкой API сервера ( роутер,маршруты) + хранилище.
 package api
 
 import (
@@ -16,6 +17,7 @@ const (
 	both
 )
 
+// NewRouter - настраивает роутер и необходимые зависимости.
 func NewRouter() chi.Router {
 	r := chi.NewRouter()
 	data := newData()
@@ -28,11 +30,13 @@ func NewRouter() chi.Router {
 	return r
 }
 
+// Data - структура хранилища переменных.
 type Data struct {
 	EthUsdt string `json:"ETH-USDT,omitempty"`
 	BtcUsdt string `json:"BTC-USDT,omitempty"`
 }
 
+// newData - конструктор хранилища.
 func newData() *Data {
 	result := &Data{
 		EthUsdt: "",
@@ -46,6 +50,7 @@ type BinanceNode struct {
 	Price  string `json:"price"`
 }
 
+// refresh - обновляет значения переменных согласно курсу бинанс.
 func (d *Data) refresh() {
 	request, err := http.Get("https://api.binance.com/api/v3/ticker/price")
 	if err != nil {
@@ -71,10 +76,12 @@ func (d *Data) refresh() {
 	}
 }
 
+// controller - структура контроллера роутера.
 type controller struct {
 	*Data
 }
 
+// newController - конструктор контроллера.
 func newController(d *Data) *controller {
 	return &controller{
 		d,
@@ -177,6 +184,7 @@ func notAllowed() http.HandlerFunc {
 	}
 }
 
+// trimZero - обрезает лишние нули значений курсов.
 func trimZero(str string) string {
 	for strings.HasSuffix(str, "0") {
 		temp := []rune(str)
@@ -188,6 +196,7 @@ func trimZero(str string) string {
 	return str
 }
 
+// findPair - свитчер значений.
 func findPair(value string) int {
 	temp := strings.Split(value, "=")
 	if len(temp) == 1 {

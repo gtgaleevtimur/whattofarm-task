@@ -1,3 +1,4 @@
+//Package main - пакет реализующий работу сервера.
 package main
 
 import (
